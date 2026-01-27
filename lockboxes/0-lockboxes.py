@@ -1,7 +1,9 @@
 #!/usr/bin/python3
+"""Lockboxes module."""
 
 
 def canUnlockAll(boxes):
+    """Return True if all boxes can be opened, else False."""
     if not isinstance(boxes, list) or not boxes:
         return False
 
