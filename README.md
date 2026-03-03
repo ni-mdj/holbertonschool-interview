@@ -60,6 +60,17 @@ Determine if all locked boxes can be opened. A box can be opened if you have its
 
 ---
 
+### 6. [Linked List Palindrome](./linked_list_palindrome)
+**Language:** C  
+**Difficulty:** Novice  
+**Weight:** 1  
+
+Check if a singly linked list is a palindrome. Implement an efficient algorithm using the two-pointer technique to find the middle and reverse the second half.
+
+**Key Concepts:** Linked lists, two-pointer technique, list reversal
+
+---
+
 ## Project Structure
 
 ```
@@ -82,8 +93,14 @@ holbertonschool-interview/
 │   ├── 0-insert_number.c             # Linked list insertion
 │   ├── lists.h                       # Header file
 │   └── README.md                     # Detailed documentation
-└── lockboxes/
-    ├── 0-lockboxes.py                # Main solution
+├── lockboxes/
+│   ├── 0-lockboxes.py                # Main solution
+│   └── README.md                     # Detailed documentation
+└── linked_list_palindrome/
+    ├── 0-is_palindrome.c             # Palindrome checking function
+    ├── linked_lists.c                # Helper functions
+    ├── lists.h                       # Header file
+    ├── 0-main.c                      # Test file
     └── README.md                     # Detailed documentation
 ```
 

@@ -23,10 +23,15 @@ cd heap_insert
 gcc -Wall -Wextra -Werror -pedantic 0-main.c 0-binary_tree_node.c 1-heap_insert.c binary_trees.c -o heap_test
 ./heap_test
 
-# Linked List
+# Linked List Insert
 cd ../insert_in_sorted_linked_list
 gcc -Wall -Wextra -Werror -pedantic 0-main.c 0-insert_number.c -o list_test
 ./list_test
+
+# Linked List Palindrome
+cd ../linked_list_palindrome
+gcc -Wall -Wextra -Werror -pedantic 0-main.c linked_lists.c 0-is_palindrome.c -o palindrome
+./palindrome
 ```
 
 ---
@@ -40,6 +45,7 @@ gcc -Wall -Wextra -Werror -pedantic 0-main.c 0-insert_number.c -o list_test
 | Heap Insert | C | Medium | Tree Data Structure |
 | Insert in Sorted List | C | Easy | Linked List Manipulation |
 | Lockboxes | Python | Easy | Graph Traversal (DFS/BFS) |
+| Linked List Palindrome | C | Novice | Two-Pointer Technique |
 
 ---
 
@@ -53,6 +59,7 @@ gcc -Wall -Wextra -Werror -pedantic 0-main.c 0-insert_number.c -o list_test
 | Heap Insert | O(log n) | O(log n) | O(log n) |
 | Linked List Insert | O(1) | O(n) | O(n) |
 | Lockboxes | O(n+e) | O(n+e) | O(n+e) |
+| Linked List Palindrome | O(n) | O(n) | O(n) |
 
 ### Space Complexity
 | Problem | Complexity |
@@ -62,6 +69,7 @@ gcc -Wall -Wextra -Werror -pedantic 0-main.c 0-insert_number.c -o list_test
 | Heap Insert | O(n) |
 | Linked List Insert | O(1) |
 | Lockboxes | O(n) |
+| Linked List Palindrome | O(1) |
 
 ---
 
@@ -117,6 +125,9 @@ heap_t *heap_insert(heap_t **root, int value);
 
 // Linked List Insert
 listint_t *insert_node(listint_t **head, int number);
+
+// Linked List Palindrome
+int is_palindrome(listint_t **head);
 
 // Sandpiles
 void sandpiles_sum(int grid1[3][3], int grid2[3][3]);
