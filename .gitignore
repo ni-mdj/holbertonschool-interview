@@ -1,0 +1,58 @@
+# Compiled C binaries
+*.o
+*.out
+*.a
+*.so
+
+# Test executables
+heap_test
+list_test
+0-binary_tree_node
+0-insert_number
+0-sandpiles
+0-sandpiles_0
+0-sandpiles_1
+0-sandpiles_2
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temp files
+*.tmp
+*.temp
+*~
+.#*
