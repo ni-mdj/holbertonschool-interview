@@ -1,24 +1,63 @@
-#ifndef BINARY_TREES_H
-#define BINARY_TREES_H
+#include "binary_trees.h"
 
-#include <stddef.h>
-#include <stdlib.h>
-
-struct binary_tree_s
+/**
+ * find_insert_parent - Trouve parent idéal pour l'insertion
+ * @root: Pointeur vers la racine
+ * Return: Le futur parent
+ */
+heap_t *find_insert_parent(heap_t *root)
 {
-	int n;
+	heap_t *queue[1024];
+	int head = 0, tail = 0;
 
-	struct binary_tree_s *parent;
-	struct binary_tree_s *left;
-	struct binary_tree_s *right;
-};
+	queue[tail++] = root;
+	while (head < tail)
+	{
+		heap_t *curr = queue[head++];
 
-typedef struct binary_tree_s binary_tree_t;
-typedef struct binary_tree_s heap_t;
+		if (!curr->left || !curr->right)
+			return (curr);
+		queue[tail++] = curr->left;
+		queue[tail++] = curr->right;
+	}
+	return (NULL);
+}
 
-void binary_tree_print(const binary_tree_t *tree);
-binary_tree_t *binary_tree_node(binary_tree_t *parent, int value);
+/**
+ * heap_insert - Insère une valeur dans un Max Binary Heap
+ * @root: Double pointeur vers la racine
+ * @value: Valeur à insérer
+ * Return: Pointeur vers le nouveau nœud
+ */
+heap_t *heap_insert(heap_t **root, int value)
+{
+	heap_t *new, *parent;
+	int tmp;
 
-heap_t *heap_insert(heap_t **root, int value);
+	if (!root)
+		return (NULL);
 
-#endif
+	if (*root == NULL)
+	{
+		*root = binary_tree_node(NULL, value);
+		return (*root);
+	}
+
+	parent = find_insert_parent(*root);
+	new = binary_tree_node(parent, value);
+
+	if (!parent->left)
+		parent->left = new;
+	else
+		parent->right = new;
+
+	while (new->parent && new->n > new->parent->n)
+	{
+		tmp = new->n;
+		new->n = new->parent->n;
+		new->parent->n = tmp;
+		new = new->parent;
+	}
+
+	return (new);
+}
