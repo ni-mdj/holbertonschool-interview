@@ -1,96 +1,71 @@
-#include <stdlib.h>
 #include "binary_trees.h"
 
 /**
-* tree_size - counts nodes
-* @tree: root
-* Return: size
-*/
-size_t tree_size(const binary_tree_t *tree)
-{
-	if (!tree)
-		return (0);
-
-	return (1 + tree_size(tree->left) + tree_size(tree->right));
-}
-
-/**
-* get_parent - finds parent of insertion point
-* @root: root
-* @index: node index
-* Return: parent node
-*/
-heap_t *get_parent(heap_t *root, size_t index)
-{
-	size_t mask = 1;
-
-	while (mask <= index)
-		mask <<= 1;
-	mask >>= 2;
-
-	while (mask > 1)
-	{
-		if (index & mask)
-			root = root->right;
-		else
-			root = root->left;
-		mask >>= 1;
-	}
-
-	return (root);
-}
-
-/**
-* heapify_up - restore heap property
-* @node: inserted node
-* Return: final node position
-*/
-heap_t *heapify_up(heap_t *node)
-{
-	int temp;
-
-	while (node->parent && node->n > node->parent->n)
-	{
-		temp = node->n;
-		node->n = node->parent->n;
-		node->parent->n = temp;
-		node = node->parent;
-	}
-
-	return (node);
-}
-
-/**
-* heap_insert - inserts value into Max Heap
-* @root: double pointer to root
-* @value: value to insert
-*
-* Return: pointer to inserted node
-*/
+ * heap_insert - Insère une valeur dans un Max Binary Heap.
+ * @root: Double pointeur vers la racine du tas.
+ * @value: Valeur à stocker dans le nouveau nœud.
+ *
+ * Return: Pointeur vers le nœud inséré, ou NULL en cas d'échec.
+ */
 heap_t *heap_insert(heap_t **root, int value)
 {
-	heap_t *parent, *node;
-	size_t size;
+	heap_t *new_node, *parent;
+	int tmp;
 
 	if (!root)
 		return (NULL);
 
-	if (!*root)
+	/* 1. Si l'arbre est vide, on crée la racine */
+	if (*root == NULL)
 	{
 		*root = binary_tree_node(NULL, value);
 		return (*root);
 	}
 
-	size = tree_size(*root) + 1;
-	parent = get_parent(*root, size);
+	/* 2. Trouver le parent approprié pour maintenir l'arbre complet */
+	parent = find_insert_parent(*root);
+	new_node = binary_tree_node(parent, value);
 
-	if (!(size & 1))
-		node = parent->left = binary_tree_node(parent, value);
+	if (parent->left == NULL)
+		parent->left = new_node;
 	else
-		node = parent->right = binary_tree_node(parent, value);
+		parent->right = new_node;
 
-	if (!node)
-		return (NULL);
+	/* 3. "Percolate Up" : Remonter la valeur si elle est plus grande que le parent */
+	while (new_node->parent && new_node->n > new_node->parent->n)
+	{
+		tmp = new_node->n;
+		new_node->n = new_node->parent->n;
+		new_node->parent->n = tmp;
+		new_node = new_node->parent;
+	}
 
-	return (heapify_up(node));
+	return (new_node);
+}
+
+/**
+ * find_insert_parent - Trouve le parent où insérer le prochain nœud.
+ * @root: Racine de l'arbre.
+ *
+ * Return: Pointeur vers le futur parent.
+ */
+heap_t *find_insert_parent(heap_t *root)
+{
+	heap_t *queue[1024];
+
+	int head = 0, tail = 0;
+
+	queue[tail++] = root;
+
+	while (head < tail)
+	{
+		heap_t *curr = queue[head++];
+
+		if (!curr->left || !curr->right)
+			return (curr);
+
+		queue[tail++] = curr->left;
+		queue[tail++] = curr->right;
+	}
+	return (NULL);
 }
