@@ -62,38 +62,39 @@ def is_valid_line(line):
 
 
 # Initialize variables
-status_codes = {}
-total_size = 0
-line_count = 0
-valid_status_codes = [200, 301, 400, 401, 403, 404, 405, 500]
+if __name__ == '__main__':
+    status_codes = {}
+    total_size = 0
+    line_count = 0
+    valid_status_codes = [200, 301, 400, 401, 403, 404, 405, 500]
 
-# Set up signal handler for CTRL + C
-signal.signal(signal.SIGINT, signal_handler)
+    # Set up signal handler for CTRL + C
+    signal.signal(signal.SIGINT, signal_handler)
 
-# Main loop to read lines from stdin
-try:
-    for line in sys.stdin:
-        line = line.strip()
-        is_valid, ip, status_code, file_size = is_valid_line(line)
+    # Main loop to read lines from stdin
+    try:
+        for line in sys.stdin:
+            line = line.strip()
+            is_valid, ip, status_code, file_size = is_valid_line(line)
 
-        if is_valid:
-            # Update total size
-            total_size += file_size
+            if is_valid:
+                # Update total size
+                total_size += file_size
 
-            # Update status code count if it's a valid status code
-            if status_code in valid_status_codes:
-                if status_code not in status_codes:
-                    status_codes[status_code] = 0
-                status_codes[status_code] += 1
+                # Update status code count if it's a valid status code
+                if status_code in valid_status_codes:
+                    if status_code not in status_codes:
+                        status_codes[status_code] = 0
+                    status_codes[status_code] += 1
 
-            # Increment line counter
-            line_count += 1
+                # Increment line counter
+                line_count += 1
 
-            # Print stats after every 10 valid lines
-            if line_count % 10 == 0:
-                print_stats(status_codes, total_size)
+                # Print stats after every 10 valid lines
+                if line_count % 10 == 0:
+                    print_stats(status_codes, total_size)
 
-except KeyboardInterrupt:
-    # Handle CTRL + C
-    print_stats(status_codes, total_size)
-    sys.exit(0)
+    except KeyboardInterrupt:
+        # Handle CTRL + C
+        print_stats(status_codes, total_size)
+        sys.exit(0)
