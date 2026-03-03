@@ -1,71 +1,24 @@
-#include "binary_trees.h"
+#ifndef BINARY_TREES_H
+#define BINARY_TREES_H
 
-/**
- * heap_insert - Insère une valeur dans un Max Binary Heap.
- * @root: Double pointeur vers la racine du tas.
- * @value: Valeur à stocker dans le nouveau nœud.
- *
- * Return: Pointeur vers le nœud inséré, ou NULL en cas d'échec.
- */
-heap_t *heap_insert(heap_t **root, int value)
+#include <stddef.h>
+#include <stdlib.h>
+
+struct binary_tree_s
 {
-	heap_t *new_node, *parent;
-	int tmp;
+	int n;
 
-	if (!root)
-		return (NULL);
+	struct binary_tree_s *parent;
+	struct binary_tree_s *left;
+	struct binary_tree_s *right;
+};
 
-	/* 1. Si l'arbre est vide, on crée la racine */
-	if (*root == NULL)
-	{
-		*root = binary_tree_node(NULL, value);
-		return (*root);
-	}
+typedef struct binary_tree_s binary_tree_t;
+typedef struct binary_tree_s heap_t;
 
-	/* 2. Trouver le parent approprié pour maintenir l'arbre complet */
-	parent = find_insert_parent(*root);
-	new_node = binary_tree_node(parent, value);
+void binary_tree_print(const binary_tree_t *tree);
+binary_tree_t *binary_tree_node(binary_tree_t *parent, int value);
 
-	if (parent->left == NULL)
-		parent->left = new_node;
-	else
-		parent->right = new_node;
+heap_t *heap_insert(heap_t **root, int value);
 
-	/* 3. "Percolate Up" : Remonter la valeur si elle est plus grande que le parent */
-	while (new_node->parent && new_node->n > new_node->parent->n)
-	{
-		tmp = new_node->n;
-		new_node->n = new_node->parent->n;
-		new_node->parent->n = tmp;
-		new_node = new_node->parent;
-	}
-
-	return (new_node);
-}
-
-/**
- * find_insert_parent - Trouve le parent où insérer le prochain nœud.
- * @root: Racine de l'arbre.
- *
- * Return: Pointeur vers le futur parent.
- */
-heap_t *find_insert_parent(heap_t *root)
-{
-	heap_t *queue[1024];
-
-	int head = 0, tail = 0;
-
-	queue[tail++] = root;
-
-	while (head < tail)
-	{
-		heap_t *curr = queue[head++];
-
-		if (!curr->left || !curr->right)
-			return (curr);
-
-		queue[tail++] = curr->left;
-		queue[tail++] = curr->right;
-	}
-	return (NULL);
-}
+#endif
