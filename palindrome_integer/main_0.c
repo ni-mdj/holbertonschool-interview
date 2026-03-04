@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <string.h>
 #include <stdio.h>
 #include "palindrome.h"
 
@@ -10,23 +9,15 @@
  */
 int main(void)
 {
-	listint_t *head;
+	unsigned long n;
 
-	head = NULL;
-	add_nodeint_end(&head, 9);
-	add_nodeint_end(&head, 9);
-	add_nodeint_end(&head, 1);
-	add_nodeint_end(&head, 9);
-	add_nodeint_end(&head, 9);
-
-	print_listint(head);
-
-	if (is_palindrome(&head) == 1)
-		printf("Linked list is a palindrome\n");
-	else
-		printf("Linked list is not a palindrome\n");
-
-	free_listint(head);
-
+	n = 12321;
+	printf("%lu is a palindrome: %d\n", n, is_palindrome(n));
+	n = 0;
+	printf("%lu is a palindrome: %d\n", n, is_palindrome(n));
+	n = 9;
+	printf("%lu is a palindrome: %d\n", n, is_palindrome(n));
+	n = 534322435;
+	printf("%lu is a palindrome: %d\n", n, is_palindrome(n));
 	return (0);
 }

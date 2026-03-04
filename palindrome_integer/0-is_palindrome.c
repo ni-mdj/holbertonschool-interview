@@ -1,40 +1,24 @@
-#include "lists.h"
+#include <stdio.h>
 
 /**
- * compare_nodes - compare nodes from both ends of a list recursively
- * @left: pointer to current left-side node pointer
- * @right: current right-side node
- *
- * Return: 1 if nodes match as palindrome, 0 otherwise
- */
-static int compare_nodes(listint_t **left, listint_t *right)
-{
-	if (right == NULL)
-		return (1);
-
-	if (compare_nodes(left, right->next) == 0)
-		return (0);
-
-	if ((*left)->n != right->n)
-		return (0);
-
-	*left = (*left)->next;
-	return (1);
-}
-
-/**
- * is_palindrome - checks if a singly linked list is a palindrome
- * @head: pointer to pointer of head node
+ * is_palindrome - checks whether or not an unsigned integer is a palindrome
+ * @n: unsigned integer to check
  *
  * Return: 1 if palindrome, 0 otherwise
  */
-int is_palindrome(listint_t **head)
+int is_palindrome(unsigned long n)
 {
-	listint_t *left;
+	unsigned long reversed;
+	unsigned long original;
 
-	if (head == NULL || *head == NULL)
-		return (1);
+	reversed = 0;
+	original = n;
 
-	left = *head;
-	return (compare_nodes(&left, *head));
+	while (n > 0)
+	{
+		reversed = (reversed * 10) + (n % 10);
+		n /= 10;
+	}
+
+	return (reversed == original ? 1 : 0);
 }
