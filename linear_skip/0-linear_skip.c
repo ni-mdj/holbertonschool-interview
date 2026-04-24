@@ -1,50 +1,65 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 #include "search.h"
 
 /**
  * linear_skip - Searches for a value in a sorted skip list of integers
- * @list: Pointer to the head of the skip list
+ * @list: Pointer to the head of the skip list to search in
  * @value: The value to search for
  *
- * Return: Pointer to the first node where value is located, or NULL
+ * Description: Uses the express lane to jump ahead, then performs
+ * linear search in the identified range
+ *
+ * Return: Pointer to the first node where value is located,
+ *         or NULL if value is not present or list is NULL
  */
 skiplist_t *linear_skip(skiplist_t *list, int value)
 {
-	skiplist_t *express, *linear;
+	skiplist_t *express_node, *prev_express;
 
 	if (list == NULL)
 		return (NULL);
 
-	express = list;
-	linear = list;
+	express_node = list;
+	prev_express = list;
 
-	while (express->express != NULL && express->n < value)
+	/* Use express lane to find the range */
+	while (express_node->express != NULL)
 	{
-		printf("Value checked at index [%lu] = [%d]\n", express->index, express->n);
-		linear = express;
-		express = express->express;
+		prev_express = express_node;
+		express_node = express_node->express;
+		printf("Value checked at index [%lu] = [%d]\n",
+			express_node->index, express_node->n);
+
+		if (express_node->n >= value)
+		{
+			printf("Value found between indexes [%lu] and [%lu]\n",
+				prev_express->index, express_node->index);
+			break;
+		}
 	}
 
-	printf("Value checked at index [%lu] = [%d]\n", express->index, express->n);
-
-	if (express->n == value)
-		return (express);
-
-	printf("Value found between indexes [%lu] and [%lu]\n",
-		linear->index, express->index);
-
-	linear = linear->next;
-
-	while (linear != NULL && linear->n < value)
+	/* If we've reached the end of express lane, search from last express to end */
+	if (express_node->express == NULL && express_node->n < value)
 	{
-		printf("Value checked at index [%lu] = [%d]\n", linear->index, linear->n);
-		linear = linear->next;
+		/* Find the actual last node */
+		prev_express = express_node;
+		while (express_node->next != NULL)
+			express_node = express_node->next;
+
+		printf("Value found between indexes [%lu] and [%lu]\n",
+			prev_express->index, express_node->index);
 	}
 
-	if (linear != NULL && linear->n == value)
-		return (linear);
+	/* Linear search in the identified range */
+	while (prev_express != NULL && prev_express->index <= express_node->index)
+	{
+		printf("Value checked at index [%lu] = [%d]\n",
+			prev_express->index, prev_express->n);
+
+		if (prev_express->n == value)
+			return (prev_express);
+
+		prev_express = prev_express->next;
+	}
 
 	return (NULL);
 }
