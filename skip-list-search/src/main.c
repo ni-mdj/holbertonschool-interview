@@ -1,32 +1,30 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "search.h"
 
+/**
+ * main - Entry point
+ *
+ * Return: Always EXIT_SUCCESS
+ */
 int main(void)
 {
-    int array[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    size_t size = sizeof(array) / sizeof(array[0]);
-    skiplist_t *skiplist = create_skiplist(array, size);
+	skiplist_t *list, *res;
+	int array[] = {
+		0, 1, 2, 3, 4, 7, 12, 15, 18, 19, 23, 53, 61, 62, 76, 99
+	};
+	size_t size = sizeof(array) / sizeof(array[0]);
 
-    if (!skiplist)
-    {
-        fprintf(stderr, "Failed to create skip list\n");
-        return 1;
-    }
+	list = create_skiplist(array, size);
+	print_skiplist(list);
 
-    print_skiplist(skiplist);
+	res = linear_skip(list, 53);
+	printf("Found %d at index: %lu\n\n", 53, res->index);
+	res = linear_skip(list, 2);
+	printf("Found %d at index: %lu\n\n", 2, res->index);
+	res = linear_skip(list, 999);
+	printf("Found %d at index: %p\n", 999, (void *)res);
 
-    int value_to_search = 5;
-    skiplist_node_t *result = linear_skip(skiplist, value_to_search);
-
-    if (result)
-    {
-        printf("Value %d found in the skip list\n", value_to_search);
-    }
-    else
-    {
-        printf("Value %d not found in the skip list\n", value_to_search);
-    }
-
-    free_skiplist(skiplist);
-    return 0;
+	free_skiplist(list);
+	return (EXIT_SUCCESS);
 }

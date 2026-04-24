@@ -1,13 +1,13 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Iinclude
+CFLAGS = -Wall -Wextra -Werror -pedantic -I include
 SRC = src/main.c src/search.c src/skip_list.c
 OBJ = $(SRC:.c=.o)
-TARGET = skip_list_search
+TARGET = linear_skip
 
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CC) -o $@ $^
+	$(CC) $(CFLAGS) -lm -o $@ $^
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

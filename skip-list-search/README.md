@@ -1,6 +1,15 @@
-# Skip List Search Project
+# Linear Skip
 
-This project implements a skip list data structure and provides functionality to perform linear search within it. The skip list is a probabilistic data structure that allows for fast search, insertion, and deletion operations.
+Implementation of a linear skip search algorithm in C.
+
+## Description
+
+A skip list is a data structure that allows O(log √n) search complexity within an ordered sequence of elements. It consists of a base list of elements with additional "express lanes" that allow faster traversal.
+
+In this implementation:
+- A node of the express lane is placed every √n nodes
+- The express lane allows us to skip multiple nodes at a time
+- When we find the range where the value might be, we switch to linear search
 
 ## Project Structure
 
@@ -11,41 +20,65 @@ skip-list-search
 │   ├── search.c        # Implementation of linear search in skip list
 │   └── skip_list.c     # Functions for managing the skip list
 ├── include
-│   ├── search.h        # Header file for search-related functions and structures
-│   └── skip_list.h     # Header file for skip list-related functions and structures
+│   └── search.h        # Header file for skip list structures and functions
 ├── Makefile            # Build instructions for the project
 └── README.md           # Documentation for the project
 ```
 
 ## Compilation
 
-To compile the project, navigate to the project directory and run the following command:
-
-```
+```bash
 make
 ```
 
-This will compile the source files and create an executable.
+Or compile manually:
+```bash
+gcc -Wall -Wextra -Werror -pedantic -lm -o linear_skip src/main.c src/search.c src/skip_list.c
+```
 
 ## Running the Program
 
 After compiling, you can run the program using:
 
+```bash
+./linear_skip
 ```
-./skip-list-search
-```
-
-## Overview of Skip List
-
-A skip list is a data structure that allows for fast search, insertion, and deletion operations. It consists of multiple layers of linked lists, where each layer acts as an express lane for the layer below it. This structure allows for logarithmic search times on average.
 
 ## Functions
 
-- `create_skiplist`: Creates a new skip list from an array of integers.
-- `print_skiplist`: Prints the elements of the skip list.
-- `free_skiplist`: Frees the memory allocated for the skip list.
-- `linear_skip`: Searches for a specific value in the skip list and prints the values checked during the search.
+- `create_skiplist(int *array, size_t size)` - Creates a skip list from an array of integers
+- `print_skiplist(const skiplist_t *list)` - Prints the elements of the skip list and express lane
+- `free_skiplist(skiplist_t *list)` - Frees the memory allocated for the skip list
+- `linear_skip(skiplist_t *head, int value)` - Searches for a value in the skip list
 
-## License
+## Example Output
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+```
+List :
+Index[0] = [0]
+Index[1] = [1]
+...
+Index[15] = [99]
+
+Express lane :
+Index[0] = [0]
+Index[4] = [4]
+Index[8] = [18]
+Index[12] = [61]
+
+Value checked at index [4] = [4]
+Value checked at index [8] = [18]
+Value checked at index [12] = [61]
+Value found between indexes [8] and [12]
+Value checked at index [8] = [18]
+Value checked at index [9] = [19]
+Value checked at index [10] = [23]
+Value checked at index [11] = [53]
+Found 53 at index: 11
+```
+
+## Clean
+
+```bash
+make clean
+```
