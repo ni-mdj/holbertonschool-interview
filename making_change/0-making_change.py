@@ -1,21 +1,32 @@
 #!/usr/bin/python3
 """
-Making change function
+Module for making change with minimum coins
 """
 
 
 def makeChange(coins, total):
-    coins.sort(reverse=True)
-    add_coins = 0
-    numb_coins = 0
-    for i in range(len(coins)):
-        while add_coins + coins[i] <= total:
-            add_coins += coins[i]
-            numb_coins += 1
+    """
+    Determine the fewest number of coins needed to meet a given amount total.
 
-    if add_coins != total:
-        return -1
-    elif numb_coins == 0:
+    Args:
+        coins: List of coin denominations (positive integers)
+        total: Target amount to reach
+
+    Returns:
+        Fewest number of coins needed, or -1 if impossible
+    """
+    if total <= 0:
         return 0
-    else:
-        return numb_coins
+
+    if not coins:
+        return -1
+
+    dp = [float('inf')] * (total + 1)
+    dp[0] = 0
+
+    for amount in range(1, total + 1):
+        for coin in coins:
+            if coin <= amount:
+                dp[amount] = min(dp[amount], dp[amount - coin] + 1)
+
+    return dp[total] if dp[total] != float('inf') else -1
